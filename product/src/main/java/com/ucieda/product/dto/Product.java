@@ -1,13 +1,22 @@
 package com.ucieda.product.dto;
 
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
+
+@Document(collection = "product")
 public class Product {
+    @Id
     private Integer id;
     private String name;
     private Category category;
     private double price;
+    private String currency;
     private double discount;
     private String discountDescription;
+    private List<String> imageURLs;
 
     public Integer getId() {
         return id;
@@ -41,6 +50,14 @@ public class Product {
         this.price = price;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     public double getDiscount() {
         return discount;
     }
@@ -55,5 +72,13 @@ public class Product {
 
     public void setDiscountDescription(String discountDescription) {
         this.discountDescription = discountDescription;
+    }
+
+    public List<String> getImageURLs() {
+        return imageURLs;
+    }
+
+    public void setImageURLs(List<String> imageURLs) {
+        this.imageURLs = imageURLs;
     }
 }

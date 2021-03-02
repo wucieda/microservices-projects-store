@@ -1,58 +1,43 @@
 package com.ucieda.product.service;
 
 import com.ucieda.product.dto.Product;
+import com.ucieda.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
-    List<Product> products = new ArrayList<>();
+    private ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public String addProduct(Product product) {
-        products.add(product);
+        productRepository.save(product);
         return "success";
     }
 
     public List<Product> listAllProducts() {
-        return products;
+        return productRepository.findAll();
     }
 
     public List<Product> productCategoryList(String category) {
-        return products.stream().filter(product -> product.getCategory().getName().equalsIgnoreCase(category))
-                .collect(Collectors.toList());
+        return productRepository.findByCategory(category);
     }
 
     public Product productById(Integer id) {
-        return products.stream()
-                .filter(product -> product.getId().equals(id))
-                .findAny()
-                .get();
+        return productRepository.findById(id).get();
     }
 
     public String updateProduct(Product product) {
-        for (Product prod : products) {
-            if (prod.getId().equals(product.getId())) {
-                prod.setName(product.getName());
-                prod.setCategory(product.getCategory());
-                prod.setDiscount(product.getDiscount());
-                prod.setDiscountDescription(product.getDiscountDescription());
-
-                return "product updated successfully";
-            }
-        }
-        return "product updated failed";
+        productRepository.save(product);
+        return "product updated successfully";
     }
 
     public String deleteProductById(Integer id) {
-        for (Product product : products) {
-            if (product.getId().equals(id)) {
-                products.remove(product);
-                return "product deleted";
-            }
-        }
-        return "product deletion failed";
+        productRepository.deleteById(id);
+        return "product deleted";
     }
 }
