@@ -2,10 +2,12 @@ package com.ucieda.product.service;
 
 import com.ucieda.product.dto.Product;
 import com.ucieda.product.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class ProductService {
     private ProductRepository productRepository;
@@ -15,6 +17,7 @@ public class ProductService {
     }
 
     public String addProduct(Product product) {
+        log.info("adding product");
         productRepository.save(product);
         return "success";
     }
